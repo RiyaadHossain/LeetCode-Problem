@@ -78,3 +78,66 @@ vector<int> searchRange(vector<int> &nums, int target)
 
     return ans;
 }
+
+/* 74. Search a 2D Matrix */
+bool searchMatrix(vector<vector<int>> &matrix, int target)
+{
+    int row = matrix.size(), col = matrix[0].size();
+    int left = 0, right = row * col - 1;
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        int i = mid / col, j = mid % col;
+        if (matrix[i][j] == target)
+            return true;
+        else if (matrix[i][j] > target)
+            right = mid - 1;
+        else
+            left = mid + 1;
+    }
+
+    return false;
+}
+
+/* 81. Search in Rotated Sorted Array II */
+bool search(vector<int> &nums, int target)
+{
+    int left = 0, right = nums.size() - 1;
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (nums[mid] == target)
+            return true;
+
+        if (nums[left] <= nums[mid])
+        {
+            if (nums[left] == nums[mid])
+            {
+                left++;
+                mid--;
+            }
+            else if (nums[left] <= target && target < nums[mid])
+            {
+                right = mid - 1;
+            }
+            else
+            {
+                left = mid + 1;
+            }
+        }
+        else
+        {
+            if (nums[mid] < target && target <= nums[right])
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+    }
+
+    return false;
+}
