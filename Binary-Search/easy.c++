@@ -1,14 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*  Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.
-
-    Input: nums = [3,0,1]
-    Output: 2
-    Explanation: n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 2 is the missing number in the range since it does not appear in nums.
-
-    Link: https://leetcode.com/problems/missing-number/
-*/
+/* 268. Missing Number */
 int missingNumber(vector<int> &nums)
 {
     sort(nums.begin(), nums.end());
@@ -29,21 +22,7 @@ int missingNumber(vector<int> &nums)
     return left;
 }
 
-/* You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
-Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad.
-You are given an API bool isBadVersion(version) which returns whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
-
-Input: n = 5, bad = 4
-Output: 4
-Explanation:
-call isBadVersion(3) -> false
-call isBadVersion(5) -> true
-call isBadVersion(4) -> true
-Then 4 is the first bad version.
-
-Link: https://leetcode.com/problems/first-bad-version/description/
-*/
-
+/* 278. First Bad Version */
 int firstBadVersion(int n)
 {
     int left = 0, right = n;
@@ -58,3 +37,79 @@ int firstBadVersion(int n)
 
     return left;
 }
+
+/* 349. Intersection of Two Arrays */
+vector<int> intersection(vector<int> &nums1, vector<int> &nums2)
+{
+    vector<int> ans;
+
+    sort(nums1.begin(), nums1.end());
+    sort(nums2.begin(), nums2.end());
+    int n = nums1.size();
+    int m = nums2.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i > 0 && nums1[i] == nums1[i - 1])
+        {
+            continue; // Skip duplicate elements in nums1
+        }
+        if (isExsit(nums2, nums1[i]))
+            ans.push_back(nums1[i]);
+    }
+
+    return ans;
+}
+
+bool isExsit(vector<int> &nums, int target)
+{
+    int low = 0;
+    int high = nums.size() - 1;
+
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+        if (nums[mid] == target)
+            return true;
+        else if (nums[mid] > target)
+            high = mid - 1;
+        else
+            low = mid + 1;
+    }
+
+    return false;
+}
+
+/* 367. Valid Perfect Square */
+bool isPerfectSquare(int num)
+{
+    if (num < 2)
+    {
+        return true;
+    }
+
+    long long left = 0;
+    long long right = num;
+
+    while (left <= right)
+    {
+        long long mid = left + (right - left) / 2;
+        long long square = mid * mid;
+
+        if (square == num)
+        {
+            return true;
+        }
+        else if (square > num)
+        {
+            right = mid - 1;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+
+    return false;
+}
+
