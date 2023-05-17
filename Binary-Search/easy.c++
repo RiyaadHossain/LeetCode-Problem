@@ -113,3 +113,38 @@ bool isPerfectSquare(int num)
     return false;
 }
 
+/* 374. Guess Number Higher or Lower */
+int guessNumber(int n)
+{
+    int ans;
+    int left = 0, right = n;
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (guess(mid) == 0)
+            return mid;
+        else if (guess(mid) == -1)
+            right = mid - 1;
+        else
+            left = mid + 1;
+    }
+
+    return ans;
+}
+
+/* 441. Arranging Coins */
+int arrangeCoins(int n)
+{
+    int left = 0, right = n;
+    while (left <= right)
+    {
+        long long mid = left + (right - left) / 2;
+        long long total_coins = (mid * (mid + 1)) / 2;
+        if (total_coins <= n)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return left - 1;
+}
