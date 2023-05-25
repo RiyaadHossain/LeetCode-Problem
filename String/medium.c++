@@ -44,3 +44,20 @@ string reverseWords(string s)
 
     return s;
 }
+
+/* 451. Sort Characters By Frequency */
+string frequencySort(string s)
+{
+    string ans = "";
+    vector<pair<int, char>> hashTable('z' + 1, {0, 0});
+
+    for (auto it : s)
+        hashTable[it] = {hashTable[it].first + 1, it};
+
+    sort(hashTable.begin(), hashTable.end());
+
+    for (auto it : hashTable)
+        ans = string(it.first, it.second) + ans;
+
+    return ans;
+}

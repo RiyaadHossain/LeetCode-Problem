@@ -76,3 +76,63 @@ bool isIsomorphic(string s, string t)
 
     return true;
 }
+
+/* 242. Valid Anagram */
+bool isAnagram(string s, string t)
+{
+    int freq[26] = {0};
+
+    for (auto it : s)
+        freq[it - 'a']++;
+
+    for (auto it : t)
+        freq[it - 'a']--;
+
+    for (auto it : freq)
+        if (it != 0)
+            return false;
+
+    return true;
+}
+
+/* 796. Rotate String */
+bool rotateString(string s, string goal)
+{
+    queue<char> q1;
+    queue<char> q2;
+
+    for (auto it : s)
+        q1.push(it);
+
+    for (auto it : goal)
+        q2.push(it);
+
+    for (int i = 0; i < s.size(); i++)
+    {
+        char c = q1.front();
+        q1.pop();
+        q1.push(c);
+
+        if (q1 == q2)
+            return true;
+    }
+
+    return false;
+}
+
+/* 13. Roman to Integer */
+int romanToInt(string s)
+{
+    map<char, int> roman{{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
+    int n = s.size();
+    int result = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (roman[s[i]] < roman[s[i + 1]])
+            result -= roman[s[i]];
+        else
+            result += roman[s[i]];
+    }
+
+    return result;
+}
