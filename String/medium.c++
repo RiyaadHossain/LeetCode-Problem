@@ -61,3 +61,32 @@ string frequencySort(string s)
 
     return ans;
 }
+
+/* 8. String to Integer (atoi) */
+int myAtoi(string s)
+{
+    int n = s.size();
+    double num = 0;
+    int i = 0;
+    while (s[i] == ' ')
+        i++;
+
+    bool pos = s[i] == '+';
+    bool neg = s[i] == '-';
+
+    if (pos | neg)
+        i++;
+
+    while (i < n && s[i] >= '0' && s[i] <= '9')
+    {
+        num = num * 10 + (s[i] - '0');
+        i++;
+    }
+
+    num = neg ? -num : num;
+
+    num = num > INT_MAX ? INT_MAX : num;
+    num = num < INT_MIN ? INT_MIN : num;
+
+    return int(num);
+}
