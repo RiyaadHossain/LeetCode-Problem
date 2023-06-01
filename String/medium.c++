@@ -19,8 +19,6 @@ string reverseWords(string s)
             end++;
             i++;
         }
-        cout << s;
-        cout << " " << end << endl;
 
         while (start < end)
         {
@@ -89,4 +87,100 @@ int myAtoi(string s)
     num = num < INT_MIN ? INT_MIN : num;
 
     return int(num);
+}
+
+/* 5. Longest Palindromic Substring */
+string longestPalindrome(string s)
+{
+    int n = s.size();
+    int max_len = 1;
+    int st = 0;
+
+    // Odd Palindromic Substring
+    for (int i = 0; i < n; ++i)
+    {
+        int l = i, r = i;
+        int curr_len = 0;
+
+        while (l >= 0 && r < n)
+        {
+            if (s[l] == s[r])
+            {
+                curr_len = r - l + 1;
+                l--;
+                r++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (curr_len > max_len)
+        {
+            max_len = curr_len;
+            st = l + 1;
+        }
+    }
+
+    // Even Paliddromic Substring
+    for (int i = 0; i < n; ++i)
+    {
+        int l = i, r = i + 1;
+        int curr_len = 0;
+
+        while (l >= 0 && r < n)
+        {
+            if (s[l] == s[r])
+            {
+                curr_len = r - l + 1;
+                l--;
+                r++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (curr_len > max_len)
+        {
+            max_len = curr_len;
+            st = l + 1;
+        }
+    }
+
+    return s.substr(st, max_len);
+}
+
+/* 1781. Sum of Beauty of All Substrings */
+int beautySum(string s)
+{
+    int ans = 0;
+    int n = s.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        int cnt[26] = {0};
+        int max_freq = INT_MIN;
+        int min_freq = INT_MAX;
+
+        for (int j = i; j < n; j++)
+        {
+            int ind = s[j] - 'a';
+            cnt[ind]++;
+            max_freq = max(max_freq, cnt[ind]);
+            min_freq = cnt[ind];
+
+            for (int k = 0; k < 26; k++)
+            {
+                if (cnt[k] >= 1)
+                    min_freq = min(min_freq, cnt[k]);
+            }
+
+            ans += (max_freq - min_freq);
+        }
+    }
+
+    return ans;
 }
