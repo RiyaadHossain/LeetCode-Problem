@@ -46,3 +46,62 @@ ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
 
     return ptr;
 }
+
+/* 876. Middle of the Linked List */
+ListNode *middleNode(ListNode *head)
+{
+    ListNode *slow = head;
+    ListNode *fast = head->next;
+
+    while (fast != NULL)
+    {
+        fast = fast->next;
+        if (fast != NULL)
+            fast = fast->next;
+
+        slow = slow->next;
+    }
+
+    return slow;
+}
+
+/* 206. Reverse Linked List */
+ListNode *reverseList(ListNode *head)
+{
+    ListNode *prev = NULL;
+    ListNode *next = NULL;
+    ListNode *curr = head;
+
+    while (curr != NULL)
+    {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    return prev;
+}
+
+/* 141. Linked List Cycle */
+bool hasCycle(ListNode *head)
+{
+
+    if (head == NULL)
+        return false;
+
+    ListNode *slow = head;
+    ListNode *fast = head->next;
+
+    while (fast != NULL)
+    {
+        fast = fast->next;
+        if (fast != NULL)
+            fast = fast->next;
+        slow = slow->next;
+        if (fast == slow)
+            return true;
+    }
+
+    return false;
+}
