@@ -105,3 +105,64 @@ bool hasCycle(ListNode *head)
 
     return false;
 }
+
+/* 234. Palindrome Linked List */
+bool isPalindrome(ListNode *head)
+{
+    if (head == NULL)
+        return false;
+
+    // step 1: Find the middle node
+    ListNode *middleNode = findMiddle(head);
+
+    // Step 2: Reverse the secode half
+    ListNode *curr = middleNode->next;
+    ListNode *prev = NULL;
+    while (curr)
+    {
+        ListNode *next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    // Step 3: Match the node element
+    ListNode *firstHalf = head;
+    ListNode *secondHalf = prev;
+    while (secondHalf)
+    {
+        if (firstHalf->val != secondHalf->val)
+            return false;
+        firstHalf = firstHalf->next;
+        secondHalf = secondHalf->next;
+    }
+
+    return true;
+}
+
+/* GFG: Find length of Loop */
+int countNodesinLoop(struct Node *head)
+{
+    struct Node *slow = head;
+    struct Node *fast = head;
+
+    while (fast && fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast)
+        {
+            slow = slow->next;
+            int ctn = 1;
+            while (slow != fast)
+            {
+                ctn++;
+                slow = slow->next;
+            }
+            return ctn;
+        }
+    }
+
+    return 0;
+}
