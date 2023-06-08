@@ -158,3 +158,90 @@ public:
         return mergeSort(l1, l2);
     }
 }
+
+/* GFG: Given a linked list of 0s, 1s and 2s, sort it. */
+Node *
+segregate(Node *head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+
+    Node *zeroHead = new Node(-1);
+    Node *zeroTail = zeroHead;
+    Node *oneHead = new Node(-1);
+    Node *oneTail = oneHead;
+    Node *twoHead = new Node(-1);
+    Node *twoTail = twoHead;
+
+    Node *curr = head;
+    while (curr)
+    {
+        if (curr->data == 0)
+        {
+            zeroTail->next = curr;
+            zeroTail = zeroTail->next;
+        }
+
+        if (curr->data == 1)
+        {
+            oneTail->next = curr;
+            oneTail = oneTail->next;
+        }
+
+        if (curr->data == 2)
+        {
+            twoTail->next = curr;
+            twoTail = twoTail->next;
+        }
+
+        curr = curr->next;
+    }
+
+    if (oneHead->next)
+    {
+        zeroTail->next = oneHead->next;
+    }
+    else
+    {
+        zeroTail->next = twoHead->next;
+    }
+
+    oneTail->next = twoHead->next;
+    twoTail->next = NULL;
+
+    return zeroHead->next;
+}
+
+/* 2. Add Two Numbers */
+ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+{
+    ListNode *resultHead = new ListNode(0);
+    ListNode *resultList = resultHead;
+    int carry = 0;
+
+    while (l1 || l2)
+    {
+        int sum = carry;
+        if (l1)
+        {
+            sum += l1->val;
+            l1 = l1->next;
+        }
+
+        if (l2)
+        {
+            sum += l2->val;
+            l2 = l2->next;
+        }
+
+        carry = sum / 10;
+        int num = sum % 10;
+        resultList->next = new ListNode(num);
+        resultList = resultList->next;
+    }
+
+    if (carry == 1)
+        resultList->next = new ListNode(carry);
+
+    return resultHead->next;
+}

@@ -166,3 +166,114 @@ int countNodesinLoop(struct Node *head)
 
     return 0;
 }
+
+/* 160. Intersection of Two Linked Lists */
+
+/* Approach 1 */
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
+{
+    map<ListNode *, bool> hashTable;
+
+    // Mark on the hashTable
+    ListNode *ptr1 = headA;
+    while (ptr1)
+    {
+        hashTable[ptr1] = true;
+        ptr1 = ptr1->next;
+    }
+
+    // Check intersection
+    ListNode *ptr2 = headB;
+    while (ptr2)
+    {
+        if (hashTable[ptr2])
+            return ptr2;
+        ptr2 = ptr2->next;
+    }
+
+    return NULL;
+}
+
+/* Approach 2 */
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
+{
+
+    // Count length
+    int lenA = countLen(headA), lenB = countLen(headB);
+
+    // Level the starting head
+    if (lenA > lenB)
+    {
+        while (lenA > lenB)
+        {
+            headA = headA->next;
+            lenA--;
+        }
+    }
+    else if (lenA < lenB)
+    {
+        while (lenA < lenB)
+        {
+            headB = headB->next;
+            lenB--;
+        }
+    }
+
+    // Find the intersection
+    while (headA && headB)
+    {
+        if (headA == headB)
+            return headA;
+        headA = headA->next;
+        headB = headB->next;
+    }
+
+    return nullptr;
+}
+
+/* GFG: Add 1 to a number represented as linked list */
+Node *addOne(Node *head)
+{
+    // Reverse List
+    Node *prev = NULL;
+    Node *curr = head;
+    while (curr)
+    {
+        Node *next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    Node *newHead = prev;
+
+    int carry = 1; // Initialize carry to 1, as we are adding 1
+    while (newHead)
+    {
+        int sum = newHead->data + carry; // Add current digit and carry
+        newHead->data = sum % 10;        // Store the least significant digit
+        carry = sum / 10;                // Update the carry for the next iteration
+        newHead = newHead->next;
+    }
+
+    // Reverse List again
+    curr = prev;
+    prev = NULL;
+    while (curr)
+    {
+        Node *next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    // If there is a remaining carry, create a new digit node
+    if (carry > 0)
+    {
+        Node *newDigit = new Node(carry);
+        newDigit->next = prev;
+        prev = newDigit;
+    }
+
+    return prev; // Return the updated linked list
+}
