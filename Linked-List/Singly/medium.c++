@@ -245,3 +245,64 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 
     return resultHead->next;
 }
+
+/* 61. Rotate List */
+class Solution
+{
+private:
+    int findLength(ListNode *head)
+    {
+        int len = 0;
+
+        ListNode *ptr = head;
+        while (ptr)
+        {
+            ptr = ptr->next;
+            len++;
+        }
+
+        return len;
+    }
+
+private:
+    ListNode *prevousOfLast(ListNode *head)
+    {
+        ListNode *ptr = head;
+        while (ptr->next && ptr->next->next != nullptr)
+        {
+            ptr = ptr->next;
+        }
+
+        return ptr;
+    }
+
+public:
+    ListNode *rotateRight(ListNode *head, int k)
+    {
+
+        // Base case
+        if (!head || head->next == nullptr)
+            return head;
+
+        // Step 1: Times of Rotation
+        int listLength = findLength(head);
+        int timesOfRotation = k % listLength;
+
+        // Step 2: Shifiing by 1
+        ListNode *startN = head;
+        while (timesOfRotation)
+        {
+            ListNode *prevousLast = prevousOfLast(startN);
+            ListNode *lastN = prevousLast->next;
+
+            // Process: Shift nodes
+            prevousLast->next = nullptr;
+            lastN->next = startN;
+            startN = lastN;
+
+            timesOfRotation--;
+        }
+
+        return startN;
+    }
+};
