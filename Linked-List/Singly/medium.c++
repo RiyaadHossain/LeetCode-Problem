@@ -306,3 +306,44 @@ public:
         return startN;
     }
 };
+
+/* 138. Copy List with Random Pointer */
+Node *copyRandomList(Node *head)
+{
+    if (!head)
+    {
+        return nullptr;
+    }
+
+    // Step 1: Generate Duplicate
+    Node *temp = head;
+    while (temp)
+    {
+        Node *nextN = temp->next;
+        temp->next = new Node(temp->val);
+        temp->next->next = nextN;
+        temp = nextN;
+    }
+
+    // Step 2: Set Random Pointers
+    temp = head;
+    while (temp)
+    {
+        temp->next->random = temp->random ? temp->random->next : nullptr;
+        temp = temp->next->next;
+    }
+
+    // Step 3: Separate Copied List
+    Node *original = head;
+    Node *copy = head->next;
+    Node *newHead = copy;
+    while (original)
+    {
+        original->next = original->next->next;
+        copy->next = copy->next ? copy->next->next : nullptr;
+        original = original->next;
+        copy = copy->next;
+    }
+
+    return newHead;
+}
