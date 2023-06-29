@@ -75,3 +75,115 @@ public:
         return result;
     }
 };
+
+/* 39. Combination Sum */
+class Solution
+{
+private:
+    void solve(vector<vector<int>> &output, vector<int> candidates, vector<int> temp, int idx, int ourSum, int target)
+    {
+
+        // Base Case
+        if (ourSum >= target)
+        {
+            if (ourSum == target)
+                output.push_back(temp);
+            return;
+        }
+
+        for (int i = idx; i < candidates.size(); i++)
+        {
+
+            // Count Sum and Add Element
+            ourSum += candidates[i];
+            temp.push_back(candidates[i]);
+            solve(output, candidates, temp, i, ourSum, target);
+
+            // Backtracking
+            ourSum -= candidates[i];
+            temp.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+    {
+        vector<vector<int>> output;
+        vector<int> temp;
+        solve(output, candidates, temp, 0, 0, target);
+        return output;
+    }
+};
+
+/* 90. Subsets II */
+class Solution
+{
+private:
+    void solve(vector<vector<int>> &output, vector<int> nums, vector<int> ans, int idx)
+    {
+        output.push_back(ans);
+
+        for (int i = idx; i < nums.size(); i++)
+        {
+            if (i != idx && nums[i] == nums[i - 1])
+                continue;
+            ans.push_back(nums[i]);
+            solve(output, nums, ans, i + 1);
+            ans.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> subsetsWithDup(vector<int> &nums)
+    {
+        vector<vector<int>> output;
+        vector<int> ans;
+        sort(nums.begin(), nums.end());
+        solve(output, nums, ans, 0);
+        return output;
+    }
+};
+
+/* 216. Combination Sum III */
+class Solution
+{
+private:
+    void solve(vector<vector<int>> &output, vector<int> nums, vector<int> ans, int expectedLen, int ourSum, int target, int idx)
+    {
+        if (ourSum == target && ans.size() == expectedLen)
+        {
+            output.push_back(ans);
+            return;
+        }
+
+        if (nums.size() <= idx)
+            return;
+        if (ans.size() == expectedLen)
+            return;
+
+        for (int i = idx; i < nums.size(); i++)
+        {
+            if (nums[i] + ourSum > target)
+                break;
+
+            ourSum += nums[i];
+            ans.push_back(nums[i]);
+            solve(output, nums, ans, expectedLen, ourSum, target, i + 1);
+
+            // Backtracking
+            ourSum -= nums[i];
+            ans.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum3(int k, int n)
+    {
+        vector<vector<int>> output;
+        vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        vector<int> ans;
+        solve(output, nums, ans, k, 0, n, 0);
+        return output;
+    }
+};
+
