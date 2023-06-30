@@ -187,3 +187,149 @@ public:
     }
 };
 
+/* 17. Letter Combinations of a Phone Number */
+class Solution
+{
+private:
+    vector<string> mapping = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    void solve(vector<string> &output, string digits, string temp, int idx)
+    {
+        if (idx == digits.size())
+        {
+            output.push_back(temp);
+            return;
+        }
+
+        int num = digits[idx] - '0';
+        string codes = mapping[num];
+
+        for (int i = 0; i < codes.size(); i++)
+        {
+            temp.push_back(codes[i]);
+            solve(output, digits, temp, idx + 1);
+            temp.pop_back();
+        }
+    }
+
+public:
+    vector<string> letterCombinations(string digits)
+    {
+        vector<string> output;
+        string temp;
+
+        if (!digits.size())
+            return output;
+
+        solve(output, digits, temp, 0);
+        return output;
+    }
+};
+
+/* 131. Palindrome Partitioning */
+class Solution
+{
+private:
+    bool isPilandrome(string str)
+    {
+        int len = str.size();
+
+        int i = 0;
+        while (i <= len / 2)
+        {
+            if (str[i] != str[len - i - 1])
+                return false;
+            i++;
+        }
+
+        return true;
+    }
+
+    void helper(vector<vector<string>> &output, vector<string> temp, string str)
+    {
+        if (str.size() == 0)
+            output.push_back(temp);
+
+        for (int i = 0; i < str.size(); i++)
+        {
+            string left = str.substr(0, i + 1);
+            if (isPilandrome(left))
+            {
+                temp.push_back(left);
+                string right = str.substr(i + 1);
+                helper(output, temp, right);
+                temp.pop_back();
+            }
+        }
+    }
+
+public:
+    vector<vector<string>> partition(string s)
+    {
+        vector<vector<string>> output;
+        vector<string> temp;
+        helper(output, temp, s);
+        return output;
+    }
+};
+
+/* Word Search */
+class Solution
+{
+    bool helperFunc(vector<vector<char>> &board, string word, int i, int j, int m, int n, int k)
+    {
+
+        // Base Case
+        if (k == word.size())
+            return true;
+        if (i < 0 || i >= m || j < 0 || j >= n)
+            return false;
+
+        // Return when curr element doesn't match
+        if (board[i][j] != word[k] || board[i][j] == '.')
+            return false;
+
+        board[i][j] = '.';
+
+        // Down
+        if (helperFunc(board, word, i + 1, j, m, n, k + 1))
+            return true;
+
+        // Left
+        if (helperFunc(board, word, i, j + 1, m, n, k + 1))
+            return true;
+
+        // Up
+        if (helperFunc(board, word, i - 1, j, m, n, k + 1))
+            return true;
+
+        // Right
+        if (helperFunc(board, word, i, j - 1, m, n, k + 1))
+            return true;
+
+        board[i][j] = word[k];
+
+        return false;
+    }
+
+public:
+    bool exist(vector<vector<char>> &board, string word)
+    {
+        int m = board.size();
+        int n = board[0].size();
+
+        if (m == 0 || n == 0)
+            return false;
+
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (helperFunc(board, word, i, j, m, n, 0))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+};
