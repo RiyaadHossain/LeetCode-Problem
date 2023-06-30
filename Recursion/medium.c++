@@ -333,3 +333,83 @@ public:
         return false;
     }
 };
+
+/* 51. N-Queens */
+class Solution
+{
+private:
+    bool isSafe(vector<string> &board, int row, int col, int n)
+    {
+        int tempRow = row;
+        int tempCol = col;
+
+        // Left Row
+        while (tempCol >= 0)
+        {
+            if (board[tempRow][tempCol] == 'Q')
+                return false;
+            tempCol--;
+        }
+
+        // Upper Diagonal
+        tempRow = row;
+        tempCol = col;
+        while (tempRow >= 0 && tempCol >= 0)
+        {
+            if (board[tempRow][tempCol] == 'Q')
+                return false;
+            tempRow--;
+            tempCol--;
+        }
+
+        // Lower Diagonal
+        tempRow = row;
+        tempCol = col;
+        while (tempRow < n && tempCol >= 0)
+        {
+            if (board[tempRow][tempCol] == 'Q')
+                return false;
+            tempRow++;
+            tempCol--;
+        }
+
+        return true;
+    }
+
+private:
+    void helperFunc(vector<vector<string>> &ans, vector<string> &board, int col, int n)
+    {
+        if (col >= n)
+        {
+            ans.push_back(board);
+            return;
+        }
+
+        for (int row = 0; row < n; row++)
+        {
+            if (isSafe(board, row, col, n))
+            {
+                board[row][col] = 'Q';
+                helperFunc(ans, board, col + 1, n);
+                board[row][col] = '.';
+            }
+        }
+    }
+
+public:
+    vector<vector<string>> solveNQueens(int n)
+    {
+        vector<vector<string>> ans;
+        vector<string> board(n);
+
+        string str(n, '.');
+        for (int i = 0; i < n; i++)
+        {
+            board[i] = str;
+        }
+
+        helperFunc(ans, board, 0, n);
+
+        return ans;
+    }
+};
