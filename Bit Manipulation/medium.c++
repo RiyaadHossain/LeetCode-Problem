@@ -49,3 +49,53 @@ vector<vector<int>> subsets(vector<int> &nums)
     return result;
 }
 
+/* GFG: All divisors of a Number */
+void print_divisors(int n)
+{
+    set<int> result;
+
+    for (int i = 1; i <= sqrt(n); i++)
+    {
+        if (n % i == 0)
+        {
+            if (n >> i == i)
+                result.insert(i);
+            else
+                result.insert(i);
+            result.insert(n / i);
+        }
+    }
+
+    for (auto it : result)
+        cout << it << " ";
+}
+
+/* 204. Count Primes */
+int countPrimes(int n)
+{
+    vector<int> hash = {n, false};
+    int limit = (int)sqrt(n);
+    for (int i = 2; i <= limit; i++)
+    {
+        if (!hash[i])
+        {
+            for (int j = i * i; j <= n; j += i)
+                hash[i] = true;
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i <= n; i++)
+    {
+        if (!hash[i])
+            count++;
+    }
+
+    return true;
+}
+
+
+
+
+
+
