@@ -113,3 +113,40 @@ int Queue::pop()
 
     return -1;
 }
+
+/* 20. Valid Parentheses */
+class Solution
+{
+public:
+    bool isValid(string s)
+    {
+        stack<int> st;
+        int len = s.length();
+
+        if (len % 2 == 1)
+            return false;
+
+        for (int i = 0; i < len; i++)
+        {
+            char curr = s[i];
+            if (curr == '(' || curr == '{' || curr == '[')
+                st.push(curr);
+            else
+            {
+                if (st.empty())
+                    return false;
+                if (curr == ')' && st.top() != '(')
+                    return false;
+                if (curr == '}' && st.top() != '{')
+                    return false;
+                if (curr == ']' && st.top() != '[')
+                    return false;
+
+                if (!st.empty())
+                    st.pop();
+            }
+        }
+
+        return st.empty();
+    }
+};
