@@ -160,3 +160,80 @@ string preToPost(string s)
 
     return st.top();
 }
+
+/* PostFix To Prefix */
+#include <string>
+#include <stack>
+
+bool isOparator(string symbol)
+{
+    if (symbol == "^" || symbol == "*" || symbol == "/" || symbol == "+" || symbol == "-")
+        return true;
+
+    return false;
+}
+
+string postfixToPrefix(string &s)
+{
+    stack<string> st;
+    int size = s.length();
+
+    for (int i = 0; i < size; i++)
+    {
+        string symbol = string(1, s[i]);
+
+        if (isOparator(symbol))
+        {
+            string firstEl = st.top();
+            st.pop();
+            string secondEl = st.top();
+            st.pop();
+
+            string mathExp = symbol + secondEl + firstEl;
+            st.push(mathExp);
+        }
+        else
+        {
+            st.push(symbol);
+        }
+    }
+
+    return st.top();
+}
+
+/* Postfix to Infix */
+bool isOparator(string symbol)
+{
+    if (symbol == "^" || symbol == "*" || symbol == "/" || symbol == "+" || symbol == "-")
+        return true;
+
+    return false;
+}
+
+string postToInfix(string postfix)
+{
+    stack<string> st;
+    int size = postfix.length();
+
+    for (int i = 0; i < size; i++)
+    {
+        string symbol = string(1, postfix[i]);
+
+        if (isOparator(symbol))
+        {
+            string firstElem = st.top();
+            st.pop();
+            string secondElem = st.top();
+            st.pop();
+
+            string mathExp = "(" + secondElem + symbol + firstElem + ")";
+            st.push(mathExp);
+        }
+        else
+        {
+            st.push(symbol);
+        }
+    }
+
+    return st.top();
+}
