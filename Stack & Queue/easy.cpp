@@ -150,3 +150,42 @@ public:
         return st.empty();
     }
 };
+
+/* 496. Next Greater Element I */
+class Solution
+{
+public:
+    vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
+    {
+        unordered_map<int, int> ump;
+        stack<int> st;
+
+        int size1 = nums1.size();
+        int size2 = nums2.size();
+
+        for (int i = size2 - 1; i >= 0; i--)
+        {
+            int curr = nums2[i];
+            while (!st.empty() && st.top() < curr)
+            {
+                st.pop();
+            }
+
+            if (!st.empty())
+                ump[curr] = st.top();
+            else
+                ump[curr] = -1;
+
+            st.push(curr);
+        }
+
+        vector<int> result;
+        for (int i = 0; i < size1; i++)
+        {
+            int curr = nums1[i];
+            result.push_back(ump[curr]);
+        }
+
+        return result;
+    }
+};

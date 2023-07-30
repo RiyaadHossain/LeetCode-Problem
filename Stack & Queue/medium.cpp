@@ -87,3 +87,34 @@ public:
         return minVal;
     }
 };
+
+/* 503. Next Greater Element II */
+class Solution
+{
+public:
+    vector<int> nextGreaterElements(vector<int> &nums)
+    {
+        stack<int> st;
+        int size = nums.size();
+        vector<int> result(size, -1);
+
+        for (int i = size * 2; i >= 0; i--)
+        {
+            int curr = nums[i % size];
+            while (!st.empty() && st.top() <= curr)
+            {
+                st.pop();
+            }
+
+            if (i < size)
+            {
+                if (!st.empty())
+                    result[i] = st.top();
+            }
+
+            st.push(curr);
+        }
+
+        return result;
+    }
+};
