@@ -189,3 +189,27 @@ public:
         return result;
     }
 };
+
+/* Next Smaller Element */
+#include <stack>
+
+vector<int> nextSmallerElement(vector<int> &arr, int n)
+{
+    stack<int> st;
+    vector<int> result(n, -1);
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int curr = arr[i];
+
+        while (!st.empty() && curr <= st.top())
+            st.pop();
+
+        if (!st.empty())
+            result[i] = st.top();
+
+        st.push(curr);
+    }
+
+    return result;
+}

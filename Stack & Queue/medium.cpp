@@ -118,3 +118,40 @@ public:
         return result;
     }
 };
+
+/* 735. Asteroid Collision */
+class Solution
+{
+public:
+    vector<int> asteroidCollision(vector<int> &asteroids)
+    {
+        vector<int> result;
+
+        for (int &a : asteroids)
+        {
+            while (!result.empty() && a < 0 && result.back() > 0)
+            {
+                int sum = a + result.back();
+
+                if (sum < 0)
+                {
+                    result.pop_back();
+                }
+                else if (sum > 0)
+                {
+                    a = 0;
+                }
+                else
+                {
+                    result.pop_back();
+                    a = 0;
+                }
+            }
+
+            if (a != 0)
+                result.push_back(a);
+        }
+
+        return result;
+    }
+};
