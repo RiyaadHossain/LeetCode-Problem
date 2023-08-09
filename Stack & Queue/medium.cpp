@@ -155,3 +155,53 @@ public:
         return result;
     }
 };
+
+/* 402. Remove K Digits */
+class Solution
+{
+public:
+    string removeKdigits(string num, int k)
+    {
+        string result;
+        stack<char> st;
+        st.push(num[0]);
+
+        if (k < 0)
+            return num;
+        if (k > num.size())
+            return "0";
+
+        for (int i = 1; i < num.size(); i++)
+        {
+            while (k > 0 && !st.empty() && num[i] < st.top())
+            {
+                k--;
+                st.pop();
+            }
+
+            st.push(num[i]);
+
+            if (st.size() == 1 && st.top() == '0')
+                st.pop();
+        }
+
+        while (k > 0 && !st.empty())
+        {
+            k--;
+            st.pop();
+        };
+
+        if (st.empty())
+            return "0";
+
+        while (!st.empty())
+        {
+            result.push_back(st.top());
+            st.pop();
+        }
+
+        reverse(result.begin(), result.end());
+
+        return result;
+    }
+};

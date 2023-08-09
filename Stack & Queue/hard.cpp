@@ -65,3 +65,153 @@ public:
         return sum;
     }
 };
+
+/* 84. Largest Rectangle in Histogram */
+class Solution
+{
+public:
+    int largestRectangleArea(vector<int> &heights)
+    {
+        int size = heights.size();
+        stack<int> st;
+        vector<int> NGL(size, 0);
+        vector<int> NGR(size, size);
+
+        // 1. NGL
+        for (int i = 0; i < size; i++)
+        {
+            int curr = heights[i];
+            while (!st.empty() && curr < heights[st.top()])
+            {
+                st.pop();
+            }
+
+            if (!st.empty())
+                NGL[i] = st.top() + 1;
+
+            st.push(i);
+        }
+
+        while (!st.empty())
+        {
+            st.pop();
+        }
+
+        // 2. NGR
+        for (int i = size - 1; i >= 0; i--)
+        {
+            int curr = heights[i];
+            while (!st.empty() && curr <= heights[st.top()])
+            {
+                st.pop();
+            }
+
+            if (!st.empty())
+                NGR[i] = st.top();
+
+            st.push(i);
+        }
+
+        // 3. Max Width
+        int max_width = 0;
+        for (int i = 0; i < size; i++)
+        {
+            int width = (NGR[i] - NGL[i]) * heights[i];
+            max_width = max(max_width, width);
+        }
+
+        return max_width;
+    }
+};
+
+/* 85. Maximal Rectangle */
+class Solution
+{
+private:
+    int findRectangle(vector<int> heights)
+    {
+        stack<int> st;
+        int size = heights.size();
+        vector<int> NGL(size, 0);
+        vector<int> NGR(size, size);
+
+        // 1. NGL
+        for (int i = 0; i < size; i++)
+        {
+            int curr = heights[i];
+            while (!st.empty() && curr < heights[st.top()])
+            {
+                st.pop();
+            }
+
+            if (!st.empty())
+                NGL[i] = st.top() + 1;
+
+            st.push(i);
+        }
+
+        while (!st.empty())
+            st.pop();
+
+        // 1. NGR
+        for (int i = size - 1; i >= 0; i--)
+        {
+            int curr = heights[i];
+            while (!st.empty() && curr <= heights[st.top()])
+            {
+                st.pop();
+            }
+
+            if (!st.empty())
+                NGR[i] = st.top();
+
+            st.push(i);
+        }
+
+        // 1. Max Width
+        int max_width = 0;
+        for (int i = 0; i < size; i++)
+        {
+            int width = (NGR[i] - NGL[i]) * heights[i];
+            max_width = max(max_width, width);
+        }
+        return max_width;
+    }
+
+public:
+    int maximalRectangle(vector<vector<char>> &matrix)
+    {
+        int colSize = matrix.size();
+        int rowSize = matrix[0].size();
+        vector<int> eachRow(rowSize, 0);
+
+        vector<vector<int>> matrixNum(colSize);
+        for (int i = 0; i < colSize; i++)
+        {
+            vector<int> temp(rowSize, 0);
+            for (int j = 0; j < rowSize; j++)
+            {
+                temp[j] = matrix[i][j] - '0';
+            }
+
+            matrixNum[i] = temp;
+        }
+
+        int max_rectangle = findRectangle(matrixNum[0]);
+        for (int i = 0; i < colSize; i++)
+        {
+            for (int j = 0; j < rowSize; j++)
+            {
+                if (matrixNum[i][j] == 1)
+                    eachRow[j]++;
+                else
+                    eachRow[j] = 0;
+            }
+
+            int width = findRectangle(eachRow);
+            max_rectangle = max(max_rectangle, width);
+        }
+
+        return max_rectangle;
+    }
+};
