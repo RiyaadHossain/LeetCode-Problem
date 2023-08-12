@@ -215,3 +215,52 @@ public:
         return max_rectangle;
     }
 };
+
+/* 239. Sliding Window Maximum */
+class Solution
+{
+public:
+    vector<int> maxSlidingWindow(vector<int> &nums, int k)
+    {
+        deque<int> dq;
+        vector<int> result;
+
+        // 1. Find max in the first k element
+        for (int i = 0; i < k; i++)
+        {
+            while (!dq.empty() && nums[i] >= nums[dq.back()])
+            {
+                dq.pop_back();
+            }
+
+            dq.push_back(i);
+        }
+
+        // Find max element in the nums and store to the result
+        for (int i = k; i < nums.size(); i++)
+        {
+
+            // Push the first max element
+            result.push_back(nums[dq.front()]);
+
+            // Pop if the k number of element exceed
+            while (!dq.empty() && i - dq.front() >= k)
+            {
+                dq.pop_front();
+            }
+
+            // Pop back if current elemet is greater
+            while (!dq.empty() && nums[i] >= nums[dq.back()])
+            {
+                dq.pop_back();
+            }
+
+            dq.push_back(i);
+        }
+
+        if (!dq.empty())
+            result.push_back(nums[dq.front()]);
+
+        return result;
+    }
+};
