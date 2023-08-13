@@ -229,3 +229,75 @@ public:
         return span;
     }
 };
+
+/* 146. LRU Cache */
+/* 
+    🚀 Intution: 
+    - Firt of all, We'll use HashMap to store all the value, so that we can access any value in O(1) using key.
+    - Secondly, to track the least recent used(LRU) element we'll use list data structure. Just to acess any element in O(1) using pointer. 
+    - So, we'll also store pointer address in the HashMap.
+*/
+
+
+class LRUCache
+{
+public:
+    // Initialize list + map + n
+    list<int> dll;
+    map<int, pair<list<int>::iterator, int>> mpp;
+    int n;
+
+    LRUCache(int capacity)
+    {
+        n = capacity;
+    }
+
+    void markRecentUsed(int key)
+    {
+        dll.erase(mpp[key].first);
+        dll.push_front(key);
+        mpp[key].first = dll.begin();
+    }
+
+    int get(int key)
+    {
+        // If key is not present
+        if (mpp.find(key) == mpp.end())
+            return -1;
+
+        // Update as Recently used
+        markRecentUsed(key);
+        return mpp[key].second;
+    }
+
+    void put(int key, int value)
+    {
+        // If key is already exist (Update value + Mark as Recent used)
+        if (mpp.find(key) != mpp.end())
+        {
+            // Update value
+            mpp[key] = {mpp[key].first, value};
+            // Mark as Recent used
+            markRecentUsed(key);
+            return;
+        }
+
+        // Decrement Limit
+        n--;
+        // Store Key
+        dll.push_front(key);
+        // Update mpp
+        mpp[key] = {dll.begin(), value};
+
+        // If limit exceed
+        if (n < 0)
+        {
+            int key_tobe_del = dll.back();
+            // Remove from mpp
+            mpp.erase(key_tobe_del);
+            // Remove from dll
+            dll.pop_back();
+            n++;
+        }
+    }
+};
